@@ -10,6 +10,8 @@ The word data for Magnetik will come from a few different open source lists of E
 
 I will use the Python natural languate processing (NLP) library [spaCy[ (https://spacy.io/) to tag listed words with their parts of speech (POS), then save the words and tags to the Magnetik database.
 
+Each time a new canvas is created by a user, they will be given a random assortment of words across all parts of speech that they can use to create their poems.
+
 ### Word List Sources
 
 Some combination of the following word lists will be used:
