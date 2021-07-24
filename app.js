@@ -18,7 +18,7 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("tiny"));
 
-/** Handle 404 errors -- this matches everything */
+/** Handle 404 errors */
 app.use(function (req, res, next) {
   return next(new NotFoundError());
 });
