@@ -18,6 +18,12 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-db.connect();
+db.connect((err) => {
+  if (err) {
+    console.error("connection error", err.stack);
+  } else {
+    console.log("connected");
+  }
+});
 
 module.exports = db;
