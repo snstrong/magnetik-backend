@@ -12,6 +12,13 @@ class Writespace {
   /** Get new word list.
    * Retrieve list of randomly selected words
    * @param constraints [[tag, limit]]
+   * e.g., [
+      ["NOUN", 10],
+      ["VERB", 10],
+      ["DET", 10],
+      ["PRON", 10],
+      ["ADJ", 10],
+    ]
    * Returns [{word, posTag}].
    * // TODO: associate with user here or elsewhere? Helper method? Something in User class?
    */
@@ -39,4 +46,8 @@ class Writespace {
 
 module.exports = Writespace;
 
-Writespace.getWordList().then((res) => console.log(res));
+// Writespace.getWordList([
+//   ["NOUN", 18],
+//   ["VERB", 11],
+//   ["ADJ", 3],
+// ]).then((res) => console.log(res));
