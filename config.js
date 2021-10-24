@@ -1,6 +1,6 @@
 "use strict";
 
-/** Shared config for application; can be required many places. */
+/** Shared config for application */
 
 require("dotenv").config();
 require("colors");
@@ -19,7 +19,7 @@ function getDatabaseUri() {
 
 // Speed up bcrypt during tests, since the algorithm safety isn't being tested
 //
-// WJB: Evaluate in 2021 if this should be increased to 13 for non-test use
+// Should this be increased to 13 for non-test use?
 const BCRYPT_WORK_FACTOR = process.env.NODE_ENV === "test" ? 1 : 12;
 
 console.log("Magnetik Config:".green);
