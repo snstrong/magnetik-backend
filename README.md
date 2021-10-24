@@ -50,4 +50,4 @@ Recommend installing nodemon for running the development server:
 
 ## Data Sourcing
 
-The word data in this project was pulled from an open source translation of Grimm's Fairy Tales available at Project Gutenberg. Read more about how the data was processed at [magnetik-word-tagging](https://github.com/snstrong/magnetik-word-tagging).
+The word data in this project was pulled from an open source translation of Grimm's Fairy Tales available at Project Gutenberg. Head over to [magnetik-word-tagging](https://github.com/snstrong/magnetik-word-tagging) to see how the word data was extracted and tagged using SpaCy, a Python natural language processing library.
