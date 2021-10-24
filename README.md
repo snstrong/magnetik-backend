@@ -4,39 +4,46 @@ REST API backend for Magnetik, a magnetic poetry web app
 
 ## Installation
 
-npm install
+    npm install
+
 
 ## Database Setup
 
-psql < magnetik.sql
-node csvImport.js
+    psql < magnetik.sql
+
+    node csvImport.js
+
 
 ## Start
 
-node server.js
+    node server.js
+
 Recommend installing nodemon for running the development server:
-npm install nodemon
-nodemon server.js
+
+    npm install nodemon
+
+    nodemon server.js
+
 
 ## Endpoints
 
 ### "/auth"
 
-- POST "./token"
-- POST "./register"
+* POST "./token"
+* POST "./register"
 
 ### "/users"
 
-- GET "/"
-- POST "/"
-- GET "./:username"
-- PATCH "./:username"
-- DELETE "./username"
+* GET "/"
+* POST "/"
+* GET "./:username"
+* PATCH "./:username"
+* DELETE "./username"
 
 ### "/writespaces"
 
-- GET "/"
+* GET "/"
 
 ## Data Sourcing
 
-The word data in this project was pulled from an open source translation of Grimm's Fairy Tales available at Project Gutenberg. Read more about how the data was processed at magnetik-word-tagging.
+The word data in this project was pulled from an open source translation of Grimm's Fairy Tales available at Project Gutenberg. Read more about how the data was processed at [magnetik-word-tagging](https://github.com/snstrong/magnetik-word-tagging).
