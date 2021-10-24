@@ -8,7 +8,7 @@ const router = new express.Router();
 
 /**
  *
- * Gets a new word list.
+ * Gets a new word list. Uses default constraints defined in Writespace model.
  *
  * Returns word list.
  *

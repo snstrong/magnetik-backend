@@ -116,8 +116,8 @@ class User {
 
   /** Given a username, return data about user.
    *
-   * Returns { username, first_name, last_name, is_admin, jobs }
-   *   where jobs is { id, title, company_handle, company_name, state }
+   * Returns { username, first_name, last_name }
+   *
    *
    * Throws NotFoundError if user not found.
    **/
@@ -127,8 +127,7 @@ class User {
       `SELECT username,
                   first_name AS "firstName",
                   last_name AS "lastName",
-                  email,
-                  is_admin AS "isAdmin"
+                  email
            FROM users
            WHERE username = $1`,
       [username]

@@ -25,19 +25,20 @@ class Writespace {
 
   static async getWordList(
     constraints = [
-      ["NOUN", 10],
+      ["NOUN", 15],
       ["VERB", 10],
       ["DET", 10],
       ["PRON", 10],
       ["ADJ", 10],
+      ["ADV", 5],
     ]
   ) {
     let result = [];
     for (let pair of constraints) {
-      let res = await db.query(
-        `SELECT id, word, pos_tag AS "posTag" FROM words WHERE pos_tag = $1 ORDER BY RANDOM() LIMIT $2`,
-        pair
-      );
+      let query = pair[1]
+        ? `SELECT id, word, pos_tag AS "posTag" FROM words WHERE pos_tag = $1 ORDER BY RANDOM() LIMIT $2`
+        : `SELECT id, word, pos_tag AS "posTag" FROM words WHERE pos_tag = $1 ORDER BY RANDOM()`;
+      let res = await db.query(query, pair);
       result = [...result, ...res.rows];
     }
     return result;
@@ -45,9 +46,3 @@ class Writespace {
 }
 
 module.exports = Writespace;
-
-// Writespace.getWordList([
-//   ["NOUN", 18],
-//   ["VERB", 11],
-//   ["ADJ", 3],
-// ]).then((res) => console.log(res));
