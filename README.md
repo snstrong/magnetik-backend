@@ -1,6 +1,10 @@
 # magnetik-backend
 
-REST API backend for Magnetik, a magnetic poetry web app
+REST API backend for Magnetik, a magnetic poetry web app.
+
+**Stack:** Node.js, Express.js, PostgreSQL, node-pg
+
+**Authentication & Hashing:** JWTs, bcrypt
 
 ## Installation
 
