@@ -7,6 +7,8 @@ const {
   authenticateJWT,
   ensureCorrectUserOrAdmin,
 } = require("../middleware/auth");
+const db = require("../db");
+const { ExpressError, BadRequestError } = require("../expressError");
 const router = new express.Router();
 
 /** GET / => { wordList }
@@ -26,9 +28,12 @@ router.get("/", authenticateJWT, async function (req, res, next) {
   }
 });
 
-/** POST /[username] {writespaceData} / => {"created": {writespaceId, username}}
+/** POST /[username] {writespaceData: {dimensions, wordTiles}} / => {"created": {writespaceId, username}}
  *
- * Creates a new writespace.
+ * Creates a new Writespace.
+ *
+ * If Writespace successfully created,
+ * populates it with writespaceData.
  *
  * Returns {writespaceId, username}
  *
@@ -45,23 +50,32 @@ router.post(
       // if success, return
       // let WritespaceId = res.id
       // return res.status(201).json({writespaceId, username});
-      return;
+      let createWS = await Writespace.createWritespace(req.params.username);
+
+      if (createWS.writespaceId) {
+        let popWS = await Writespace.populateWritespace(req.writespaceData);
+      } else {
+        throw new ExpressError("Create Writespace failed", 500);
+      }
+      return res.status(201).json({ popWS });
     } catch (err) {
       return next(err);
     }
   }
 );
 
-/** PATCH /[username]/[writespaceId] => {"updated": {writespaceId, username}}
+/** PUT /[username]/[writespaceId] => {"updated": {writespaceId, username}}
  *
  * Updates a writespace.
+ *
+ * Requires {writespaceData} in req
  *
  * Returns {"updated": {writespaceId, username}}
  *
  * Authorization required: admin or same user.
  */
 
-router.patch(
+router.put(
   "/:username/:writespaceId",
   ensureCorrectUserOrAdmin,
   async function (req, res, next) {
@@ -74,5 +88,7 @@ router.patch(
     }
   }
 );
+
+/** GET username/writespace */
 
 module.exports = router;

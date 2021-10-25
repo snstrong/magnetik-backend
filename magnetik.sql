@@ -1,3 +1,6 @@
+\echo 'Delete and recreate magnetik db?'
+\prompt 'Return for yes or control-C to cancel > ' foo
+
 DROP DATABASE IF EXISTS magnetik;
 CREATE DATABASE magnetik;
 \connect magnetik

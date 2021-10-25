@@ -1,4 +1,4 @@
-/** Import word data from csv file to postgresql database */
+/** Import word data from csv to postgresql database for magnetik application. */
 
 const fs = require("fs");
 const fastcsv = require("fast-csv");
@@ -15,7 +15,9 @@ let csvStream = fastcsv
   .on("end", function () {
     // remove the first line header
     csvData.shift();
+
     const query = "INSERT INTO words (word, pos_tag) VALUES %L";
+
     try {
       db.query(format(query, csvData)).then(() =>
         console.log("Insert successful")

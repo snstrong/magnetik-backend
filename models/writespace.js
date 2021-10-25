@@ -43,6 +43,40 @@ class Writespace {
     }
     return result;
   }
+
+  static async createWritespace(username) {
+    let query = `INSERT INTO writespaces (username) VALUES ($1) RETURNING username, id AS "writespaceId"`;
+    let res = await db.query(query, [username]);
+    return res.rows[0];
+  }
+
+  static async populateWritespace(writespaceId) {
+    return;
+  }
+
+  static async updateWritespace(writespaceId) {
+    // Check if empty
+    // If empty, insert
+    // If not empty, update
+
+    let query = ``;
+    let res = await db.query(query, [writespaceId]);
+    return res.rows;
+  }
+
+  static async getWritespaceWordList(writespaceId) {
+    let query = `SELECT
+        writespace.id AS "writespaceId",
+        wordsInUse.word_id AS "wordId",
+        wordsInUse.x,
+        wordsInUse.y,
+        words.word
+      FROM writespaces
+      JOIN wordsInUse
+        ON wordsInUse.writespace_id = $1
+      JOIN words
+        ON words.id = wordsInUse.word_id`;
+  }
 }
 
 module.exports = Writespace;

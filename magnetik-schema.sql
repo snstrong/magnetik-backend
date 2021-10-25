@@ -8,9 +8,9 @@ CREATE TABLE users (
   is_admin BOOLEAN NOT NULL DEFAULT FALSE
 );
 
-CREATE TABLE canvases (
+CREATE TABLE writespaces (
     id SERIAL PRIMARY KEY,
-    user_username TEXT NOT NULL
+    username TEXT NOT NULL
         REFERENCES users ON DELETE CASCADE
 );
 
@@ -23,9 +23,9 @@ CREATE TABLE words (
 CREATE TABLE wordsInUse (
     word_id INTEGER
         REFERENCES words ON DELETE CASCADE,
-    canvas_id INTEGER
-        REFERENCES canvases ON DELETE CASCADE,
+    writespace_id INTEGER
+        REFERENCES writespaces ON DELETE CASCADE,
     x NUMERIC NOT NULL,
     y NUMERIC NOT NULL,
-    PRIMARY KEY (word_id, canvas_id)
+    PRIMARY KEY (word_id, writespace_id)
 );
