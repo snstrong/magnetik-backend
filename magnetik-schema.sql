@@ -11,7 +11,9 @@ CREATE TABLE users (
 CREATE TABLE writespaces (
     id SERIAL PRIMARY KEY,
     username TEXT NOT NULL
-        REFERENCES users ON DELETE CASCADE
+        REFERENCES users ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    width NUMERIC NOT NULL
 );
 
 CREATE TABLE words (
