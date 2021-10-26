@@ -19,9 +19,10 @@ let csvStream = fastcsv
     const query = "INSERT INTO words (word, pos_tag) VALUES %L";
 
     try {
-      db.query(format(query, csvData)).then(() =>
-        console.log("Insert successful")
-      );
+      db.query(format(query, csvData)).then(() => {
+        console.log("Insert successful");
+        process.exit();
+      });
     } catch (err) {
       console.error("Error inserting into db", err);
     }
