@@ -22,7 +22,7 @@ CREATE TABLE words (
     pos_tag TEXT
 );
 
-CREATE TABLE wordsInUse (
+CREATE TABLE writespace_words (
     word_id INTEGER
         REFERENCES words ON DELETE CASCADE,
     writespace_id INTEGER
