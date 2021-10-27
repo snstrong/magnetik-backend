@@ -50,14 +50,15 @@ router.post(
       // if success, return
       // let WritespaceId = res.id
       // return res.status(201).json({writespaceId, username});
-      let createWS = await Writespace.createWritespace(req.params.username);
+      let writespace = await Writespace.createWritespace(req.body);
+      return res.status(201).json({ writespace });
 
-      if (createWS.writespaceId) {
-        let popWS = await Writespace.populateWritespace(req.writespaceData);
-      } else {
-        throw new ExpressError("Create Writespace failed", 500);
-      }
-      return res.status(201).json({ popWS });
+      // if (createWS.writespaceId) {
+      //   let populateWS = await Writespace.populateWritespace(req.writespaceData);
+      // } else {
+      //   throw new ExpressError("Create Writespace failed", 500);
+      // }
+      // return res.status(201).json({ populateWS });
     } catch (err) {
       return next(err);
     }

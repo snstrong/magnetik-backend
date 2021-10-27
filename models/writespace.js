@@ -20,7 +20,6 @@ class Writespace {
       ["ADJ", 10],
     ]
    * Returns [{word, posTag}].
-   * // TODO: associate with user here or elsewhere? Helper method? Something in User class?
    */
 
   static async getWordList(
@@ -44,9 +43,9 @@ class Writespace {
     return result;
   }
 
-  static async createWritespace(username) {
-    let query = `INSERT INTO writespaces (username) VALUES ($1) RETURNING username, id AS "writespaceId"`;
-    let res = await db.query(query, [username]);
+  static async createWritespace({ username, title, width }) {
+    let query = `INSERT INTO writespaces (username, title, width) VALUES ($1, $2, $3) RETURNING username, id AS "writespaceId"`;
+    let res = await db.query(query, [username, title, width]);
     return res.rows[0];
   }
 
