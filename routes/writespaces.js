@@ -83,6 +83,27 @@ router.post(
   }
 );
 
+/** GET /[username]/[writespaceId]
+ * => {writespaceData}
+ *
+ * Retrieves a single writespace.
+ */
+
+router.get(
+  "/:username/:writespaceId",
+  ensureCorrectUserOrAdmin,
+  async function (req, res, next) {
+    try {
+      let writespaceData = await Writespace.getWritespace(
+        req.params.writespaceId
+      );
+      return res.status(200).json({ writespaceData });
+    } catch (err) {
+      return next(err);
+    }
+  }
+);
+
 /** PUT /[username]/[writespaceId] => {"updated": {writespaceId, username}}
  *
  * Updates a writespace.

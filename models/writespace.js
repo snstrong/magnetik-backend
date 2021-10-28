@@ -77,18 +77,17 @@ class Writespace {
     return res.rows;
   }
 
-  static async getWritespaceWordList(writespaceId) {
-    let query = `SELECT
-        writespace.id AS "writespaceId",
-        wordsInUse.word_id AS "wordId",
-        wordsInUse.x,
-        wordsInUse.y,
-        words.word
-      FROM writespaces
-      JOIN wordsInUse
-        ON wordsInUse.writespace_id = $1
-      JOIN words
-        ON words.id = wordsInUse.word_id`;
+  static async getWritespace(writespaceId) {
+    let query = `SELECT writespace_words.writespace_id,
+                    writespace_words.word_id,
+                    words.word,
+                    writespace_words.x,
+                    writespace_words.y
+                  FROM writespace_words
+                  JOIN words ON writespace_words.word_id = words.id
+                  WHERE writespace_words.writespace_id = $1;`;
+    let res = await db.query(query, [writespaceId]);
+    return res.rows;
   }
 }
 
