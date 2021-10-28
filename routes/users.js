@@ -65,6 +65,7 @@ router.get("/", ensureAdmin, async function (req, res, next) {
  * Authorization required: admin or same user-as-:username
  **/
 
+// TODO: get all user writespaces
 router.get(
   "/:username",
   ensureCorrectUserOrAdmin,

@@ -8,7 +8,12 @@ const {
   ensureCorrectUserOrAdmin,
 } = require("../middleware/auth");
 const db = require("../db");
-const { ExpressError, BadRequestError } = require("../expressError");
+const {
+  ExpressError,
+  BadRequestError,
+  NotFoundError,
+  UnauthorizedError,
+} = require("../expressError");
 const router = new express.Router();
 
 /** GET / => { wordList }
@@ -84,7 +89,7 @@ router.post(
 );
 
 /** GET /[username]/[writespaceId]
- * => {writespaceData}
+ * => {writespace, writespaceData}
  *
  * Retrieves a single writespace.
  */
@@ -94,10 +99,16 @@ router.get(
   ensureCorrectUserOrAdmin,
   async function (req, res, next) {
     try {
-      let writespaceData = await Writespace.getWritespace(
-        req.params.writespaceId
-      );
-      return res.status(200).json({ writespaceData });
+      let writespaceId = req.params.writespaceId;
+      // First get writespace, throw error if not found
+      let writespace = await Writespace.getWritespace(writespaceId);
+      console.log("Writespace", writespace);
+      if (!writespace.id) {
+        throw new NotFoundError(`Writespace ${writespaceId} not found`);
+      }
+      // then get word data for writespace
+      let writespaceData = await Writespace.getWritespaceWords(writespaceId);
+      return res.status(200).json({ writespace, writespaceData });
     } catch (err) {
       return next(err);
     }
