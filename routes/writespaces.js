@@ -65,6 +65,24 @@ router.post(
   }
 );
 
+/** POST /[username]/[writespaceId]
+ * => {success, username, writespaceId, inserted }
+ * Populates writespace with word data.
+ */
+
+router.post(
+  "/:username/:writespaceId",
+  ensureCorrectUserOrAdmin,
+  async function (req, res, next) {
+    try {
+      let populated = await Writespace.populateWritespace(req.body);
+      return res.status(201).json({ success: true, ...populated });
+    } catch (err) {
+      return next(err);
+    }
+  }
+);
+
 /** PUT /[username]/[writespaceId] => {"updated": {writespaceId, username}}
  *
  * Updates a writespace.

@@ -1,6 +1,7 @@
 "use strict";
 
 const db = require("../db");
+const format = require("pg-format");
 const { sqlForPartialUpdate } = require("../helpers/sql");
 const {
   NotFoundError,
@@ -49,8 +50,21 @@ class Writespace {
     return res.rows[0];
   }
 
-  static async populateWritespace(writespaceId) {
-    return;
+  static async populateWritespace({ writespaceId, wordTiles, username }) {
+    let query = `INSERT INTO writespace_words
+                    (word_id, writespace_id, x, y)
+                    VALUES %L`;
+    let valuesArr = [];
+    for (let wordId in wordTiles) {
+      let { x, y } = wordTiles[wordId];
+      valuesArr.push([wordId, writespaceId, x, y]);
+    }
+    let res = await db.query(format(query, valuesArr));
+    return {
+      inserted: res.rowCount,
+      writespaceId: writespaceId,
+      username: username,
+    };
   }
 
   static async updateWritespace(writespaceId) {
