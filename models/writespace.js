@@ -80,26 +80,18 @@ class Writespace {
 
   static async updateWritespace({ writespaceId, wordTiles, username }) {
     // TODO: TRANSACTION?
-    // let res = Writespace.deleteWritespace(writespaceId).then((res) => {
-    //   if (res.deleted) {
-    //     let res = Writespace.populateWritespace({
-    //       writespaceId,
-    //       wordTiles,
-    //       username,
-    //     }).then((res) => res);
-    //   }
-    // });
-
-    db.query(
-      `DELETE FROM writespace_words WHERE writespace_words.writespace_id = $1`,
+    console.log("Writespace ID=", writespaceId);
+    let cleared = await db.query(
+      `DELETE FROM writespace_words WHERE writespace_words.writespace_id = $1 RETURNING writespace_words.writespace_id AS "writespaceId"`,
       [writespaceId]
-    ).then(() => {
-      Writespace.populateWritespace({ writespaceId, wordTiles, username }).then(
-        (result) => {
-          return result;
-        }
-      );
+    );
+    let populated = await Writespace.populateWritespace({
+      writespaceId: cleared.rows[0].writespaceId,
+      wordTiles: wordTiles,
+      username: username,
     });
+    console.log(populated);
+    return populated;
   }
 
   static async getWritespace(writespaceId) {

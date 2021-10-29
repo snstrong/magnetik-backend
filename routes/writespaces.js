@@ -120,15 +120,13 @@ router.put(
   async function (req, res, next) {
     console.log("Request to PUT /writespace/username/writespaceId");
     try {
-      console.log(req.body);
       let result = await Writespace.updateWritespace(req.body);
-      return result;
+      return res.json(result);
     } catch (err) {
       return next(err);
     }
   }
 );
 
-/** GET username/writespace */
-
+/** DELETE /[username]/[writespaceId] */
 module.exports = router;
