@@ -137,7 +137,12 @@ class User {
 
     if (!user) throw new NotFoundError(`No user: ${username}`);
 
-    return user;
+    const writespaces = await db.query(
+      `SELECT id AS "writespaceId", title, width FROM writespaces WHERE username=$1`,
+      [username]
+    );
+
+    return { ...user, writespaces: writespaces.rows };
   }
 
   /** Update user data with `data`.

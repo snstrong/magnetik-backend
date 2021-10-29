@@ -40,7 +40,7 @@ router.get("/", authenticateJWT, async function (req, res, next) {
  * If Writespace successfully created,
  * populates it with writespaceData.
  *
- * Returns {writespaceId, username}
+ * Returns {writespaceId, username, title}
  *
  * Authorization required: admin or same user.
  * */
@@ -50,20 +50,8 @@ router.post(
   ensureCorrectUserOrAdmin,
   async function (req, res, next) {
     try {
-      // validate w/ JSON schema
-      // post to db
-      // if success, return
-      // let WritespaceId = res.id
-      // return res.status(201).json({writespaceId, username});
       let writespace = await Writespace.createWritespace(req.body);
       return res.status(201).json({ writespace });
-
-      // if (createWS.writespaceId) {
-      //   let populateWS = await Writespace.populateWritespace(req.writespaceData);
-      // } else {
-      //   throw new ExpressError("Create Writespace failed", 500);
-      // }
-      // return res.status(201).json({ populateWS });
     } catch (err) {
       return next(err);
     }
@@ -102,7 +90,7 @@ router.get(
       let writespaceId = req.params.writespaceId;
       // First get writespace, throw error if not found
       let writespace = await Writespace.getWritespace(writespaceId);
-      console.log("Writespace", writespace);
+      // console.log("Writespace", writespace);
       if (!writespace.id) {
         throw new NotFoundError(`Writespace ${writespaceId} not found`);
       }
@@ -130,10 +118,11 @@ router.put(
   "/:username/:writespaceId",
   ensureCorrectUserOrAdmin,
   async function (req, res, next) {
+    console.log("Request to PUT /writespace/username/writespaceId");
     try {
-      // validate w/ JSON schema
-      // send update to db
-      // if success, return {"updated": {writespaceId, username}}
+      console.log(req.body);
+      let result = await Writespace.updateWritespace(req.body);
+      return result;
     } catch (err) {
       return next(err);
     }

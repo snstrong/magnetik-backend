@@ -7,6 +7,7 @@ const {
   NotFoundError,
   BadRequestError,
   UnauthorizedError,
+  ExpressError,
 } = require("../expressError");
 
 class Writespace {
@@ -45,7 +46,17 @@ class Writespace {
   }
 
   static async createWritespace({ username, title, width }) {
-    let query = `INSERT INTO writespaces (username, title, width) VALUES ($1, $2, $3) RETURNING username, id AS "writespaceId"`;
+    let duplicate = await db.query(
+      `SELECT title FROM writespaces WHERE username = $1 AND title = $2`,
+      [username, title]
+    );
+
+    if (duplicate.rows.length)
+      throw new ExpressError(
+        `\"${title}\" by ${username} already exists. Try another title.`
+      );
+
+    let query = `INSERT INTO writespaces (username, title, width) VALUES ($1, $2, $3) RETURNING username, id AS "writespaceId", title`;
     let res = await db.query(query, [username, title, width]);
     return res.rows[0];
   }
@@ -67,14 +78,28 @@ class Writespace {
     };
   }
 
-  static async updateWritespace(writespaceId) {
-    // Check if empty
-    // If empty, insert
-    // If not empty, update
+  static async updateWritespace({ writespaceId, wordTiles, username }) {
+    // TODO: TRANSACTION?
+    // let res = Writespace.deleteWritespace(writespaceId).then((res) => {
+    //   if (res.deleted) {
+    //     let res = Writespace.populateWritespace({
+    //       writespaceId,
+    //       wordTiles,
+    //       username,
+    //     }).then((res) => res);
+    //   }
+    // });
 
-    let query = ``;
-    let res = await db.query(query, [writespaceId]);
-    return res.rows;
+    db.query(
+      `DELETE FROM writespace_words WHERE writespace_words.writespace_id = $1`,
+      [writespaceId]
+    ).then(() => {
+      Writespace.populateWritespace({ writespaceId, wordTiles, username }).then(
+        (result) => {
+          return result;
+        }
+      );
+    });
   }
 
   static async getWritespace(writespaceId) {
@@ -96,6 +121,19 @@ class Writespace {
                   WHERE writespace_words.writespace_id = $1;`;
     let wordList = await db.query(wordListQuery, [writespaceId]);
     return wordList.rows;
+  }
+
+  /** Delete given user from database; returns {deleted, writespace}. */
+  static async deleteWritespace(writespaceId) {
+    console.log("attempting to delete writespace=", writespaceId);
+    let res = await db.query(
+      `DELETE FROM writespaces WHERE id = $1 RETURNING id AS "writespaceId"`,
+      [writespaceId]
+    );
+    let writespace = res.rows[0];
+    console.log("res=", writespace);
+    if (!writespace) throw new NotFoundError(`No writespace: ${writespaceId}`);
+    return { deleted: true, writespace: writespace };
   }
 }
 
