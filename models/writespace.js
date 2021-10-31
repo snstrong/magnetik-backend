@@ -28,7 +28,8 @@ class Writespace {
     constraints = [
       ["NOUN", 15],
       ["VERB", 10],
-      ["ADP", 10][("DET", 10)],
+      ["ADP", 10],
+      ["DET", 10],
       ["PRON", 10],
       ["ADJ", 10],
       ["ADV", 5],
